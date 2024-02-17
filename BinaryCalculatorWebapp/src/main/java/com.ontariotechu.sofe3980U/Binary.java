@@ -77,6 +77,87 @@ public class Binary
 		}
 		Binary result=new Binary(num3);  // create a binary object with the calculated value.
 		return result;
-		
+
 	}
-}	
+	/**
+	 * Bitwise OR of two binary variables
+	 *
+	 * @param num1 The first addend object
+	 * @param num2 The second addend object
+	 * @return A binary variable with a value of <i>num1 | num2</i>.
+	 */
+	public static Binary or(Binary num1,Binary num2)
+	{
+		String bigger = "";
+		String smaller = "";
+
+		if (num1.getValue().length() > num2.getValue().length()){
+			bigger = num1.getValue();
+			smaller = num2.getValue();
+		}else{
+			bigger = num2.getValue();
+			smaller = num1.getValue();
+		}
+		char[] num3 = bigger.toCharArray();
+
+		int difference = bigger.length() - smaller.length();
+		for (int i=0; i<smaller.length(); ++i){
+			int s = smaller.charAt(i) == '1' ? 1 : 0;
+			int b = bigger.charAt(difference + i) == '1' ? 1 : 0;
+			num3[difference + i] = (b | s) == 1 ? '1' : '0';
+		}
+
+		return new Binary(String.valueOf(num3));
+	}
+	/**
+	 * Computes the bitwise AND of two binary numbers.
+	 *
+	 * @param num1 The first binary number.
+	 * @param num2 The second binary number.
+	 * @return A binary number representing the bitwise AND of <i>num1</i> and <i>num2</i>.
+	 */
+	public static Binary and(Binary num1, Binary num2) {
+		String bigger;
+		String smaller;
+		StringBuilder result = new StringBuilder();
+
+		if (num1.getValue().length() > num2.getValue().length()) {
+			bigger = num1.getValue();
+			smaller = num2.getValue();
+		} else {
+			bigger = num2.getValue();
+			smaller = num1.getValue();
+		}
+
+		int difference = bigger.length() - smaller.length();
+		for (int i = 0; i < smaller.length(); ++i) {
+			int bit1 = smaller.charAt(i) == '1' ? 1 : 0;
+			int bit2 = bigger.charAt(difference + i) == '1' ? 1 : 0;
+			result.append((bit1 & bit2) == 1 ? '1' : '0');
+		}
+
+		return new Binary(result.toString());
+	}
+
+	/**
+	 * Computes the multiplication of two binary numbers.
+	 *
+	 * @param num1 The first binary number.
+	 * @param num2 The second binary number.
+	 * @return A binary number representing the multiplication of <i>num1</i> and <i>num2</i>.
+	 */
+	public static Binary multiply(Binary num1, Binary num2) {
+		Binary result = new Binary("0");
+		String reversedNum2 = new StringBuilder(num2.getValue()).reverse().toString();
+
+		for (int i = 0; i < reversedNum2.length(); i++) {
+			if (reversedNum2.charAt(i) == '1') {
+				result = add(result, num1);
+			}
+			num1 = add(num1, num1);
+		}
+
+		return result;
+	}
+
+}
